@@ -54,6 +54,11 @@ export default function Signup() {
             if(user.email === data.email && user.password === data.password){
                 console.log("Welcome: ",user.name);
                 sessionStorage.setItem("currentUser",JSON.stringify(user));
+                if(user.role === "admin"){
+                    navigate('/admin')
+                }else{
+                    navigate('/user')
+                }
             }else{
                 console.log("Invalid Email or Password");
                 navigate("/sinup");
