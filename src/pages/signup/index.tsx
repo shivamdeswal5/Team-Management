@@ -16,6 +16,7 @@ import { Link } from "react-router";
 
 const schema = yup
     .object({
+        name: yup.string().required("name is required"),
         email: yup.string().email("Invalid Email Format").required("Email is required"),
         password: yup.string().required().min(6),
         confirmPassword: yup.string().label('Confirm Password').required().oneOf([yup.ref('password')], 'Passwords must match'),
@@ -29,6 +30,7 @@ export default function Signup() {
     const navigate = useNavigate();
 
     type Inputs = {
+        name: string
         email: string
         password: string
         confirmPassword: string
@@ -51,12 +53,8 @@ export default function Signup() {
         const prevUsers = JSON.parse(getUsers);
         localStorage.setItem("user", JSON.stringify([...prevUsers,data]));
         console.log("Signup Successfully ...")
+        navigate('/login')
         reset();
-        if(data.role === "admin"){
-            navigate('/admin');
-        }else{
-            navigate('/user');
-        }
 
     };
 
@@ -92,6 +90,47 @@ export default function Signup() {
                     </Box>
 
                     <form className={style.formClass} onSubmit={handleSubmit(onSubmit)}>
+
+                        <Box className={style.flex}>
+                            <TextField
+                                {...register('name')}
+                                id="outlined-required"
+                                label="Full Name"
+                                placeholder='Required'
+                                className={style.changeColor}
+                                name="name"
+
+                                sx={{
+                                    border: 'white',
+                                    // Root class for the input field
+                                    "& .MuiOutlinedInput-root": {
+                                        color: "white",
+                                        // Class for the border around the input field
+                                        "& .MuiOutlinedInput-notchedOutline": {
+                                            borderColor: "",
+                                        },
+                                    },
+                                    // Class for the label of the input field
+                                    "& .MuiInputLabel-outlined": {
+                                        color: "rgba(160, 160, 160, 0.842)",
+                                    },
+
+                                    "&.Mui-focused": {
+                                        "& .MuiOutlinedInput-notchedOutline": {
+                                            borderColor: "white",
+                                            borderWidth: "3px",
+                                        },
+                                    },
+                                    "&:hover:not(.Mui-focused)": {
+                                        "& .MuiOutlinedInput-notchedOutline": {
+                                            borderColor: "white",
+                                        },
+                                    },
+
+                                }}
+                            />
+                            {errors.email?.message}
+                        </Box>
 
                         <Box className={style.flex}>
                             <TextField

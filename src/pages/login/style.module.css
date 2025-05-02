@@ -30,6 +30,7 @@ Link{
     flex-direction: column;
     gap: 2rem;
     flex-wrap: wrap;
+    width: 150%;
 }
 
 .flex{

@@ -14,6 +14,7 @@ import { Link } from "react-router";
 
 const schema = yup
     .object({
+        name: yup.string().required("Name is Required"),
         email: yup.string().email("Invalid Email Format").required("Email is required"),
         password: yup.string().required().min(6),
         confirmPassword: yup.string().label('Confirm Password').required().oneOf([yup.ref('password')], 'Passwords must match'),
@@ -27,12 +28,16 @@ export default function Signup() {
     const navigate = useNavigate();
 
     type Inputs = {
+        name:string
         email: string
         password: string
         confirmPassword: string
         organization: string
         role: string
     }
+
+    const getUsers = localStorage.getItem('user') || "[]";
+    const users = JSON.parse(getUsers);
 
     const {
         register,
@@ -45,12 +50,17 @@ export default function Signup() {
 
     const onSubmit = (data: Inputs) => {
         console.log(data);
-        const getUsers = localStorage.getItem('user') || "[]";
-        const prevUsers = JSON.parse(getUsers);
-        localStorage.setItem("user", JSON.stringify([...prevUsers, data]));
-        console.log("Signup Successfully ...");
+        users.map((user:Inputs)=>{
+            if(user.email === data.email && user.password === data.password){
+                console.log("Welcome: ",user.name);
+                sessionStorage.setItem("currentUser",JSON.stringify(user));
+            }else{
+                console.log("Invalid Email or Password");
+                navigate("/sinup");
+            }
+        })
+
         reset();
-        navigate('/login');
     };
 
     return (
