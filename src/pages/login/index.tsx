@@ -1,15 +1,13 @@
 import style from './style.module.css'
 import Box from '@mui/material/Box';
 import {
-    Typography, Grid, Stack, Button, FormControlLabel,RadioGroup
+    Typography, Grid, Stack, Button
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import coverImg from '../../assets/signup-images/image.png'
 import { useForm } from 'react-hook-form';
 import * as yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup';
-import Radio from '@mui/material/Radio';
-import { pink } from '@mui/material/colors';
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
 
@@ -49,15 +47,10 @@ export default function Signup() {
         console.log(data);
         const getUsers = localStorage.getItem('user') || "[]";
         const prevUsers = JSON.parse(getUsers);
-        localStorage.setItem("user", JSON.stringify([...prevUsers,data]));
-        console.log("Signup Successfully ...")
+        localStorage.setItem("user", JSON.stringify([...prevUsers, data]));
+        console.log("Signup Successfully ...");
         reset();
-        if(data.role === "admin"){
-            navigate('/admin');
-        }else{
-            navigate('/user');
-        }
-
+        navigate('/login');
     };
 
     return (
@@ -84,11 +77,11 @@ export default function Signup() {
                     spacing={{ xs: 2, sm: 4, md: 4 }}>
 
                     <Typography variant="h3" component="h2">
-                        Create an Account
+                        Login
                     </Typography>
 
                     <Box sx={{ color: 'gray' }}>
-                        Already have an account?  <Link className={style.linkColor} to="/login">Login</Link>
+                        New User? <Link className={style.linkColor} to="/signup">Signup</Link>
                     </Box>
 
                     <form className={style.formClass} onSubmit={handleSubmit(onSubmit)}>
@@ -174,110 +167,10 @@ export default function Signup() {
                             {errors.password?.message}
                         </Box>
 
-                        <Box className={style.flex} >
-                            <TextField
-                                {...register('confirmPassword')}
-                                id="outlined-required"
-                                label="Confirm Password"
-                                placeholder='Required'
-                                className={style.changeColor}
-                                name="confirmPassword"
-                                sx={{
-                                    border: 'white',
-                                    // Root class for the input field
-                                    "& .MuiOutlinedInput-root": {
-                                        color: "white",
-                                        // Class for the border around the input field
-                                        "& .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: "",
-                                        },
-                                    },
-                                    // Class for the label of the input field
-                                    "& .MuiInputLabel-outlined": {
-                                        color: "rgba(160, 160, 160, 0.842)",
-                                    },
-
-                                    "&.Mui-focused": {
-                                        "& .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: "white",
-                                            borderWidth: "3px",
-                                        },
-                                    },
-                                    "&:hover:not(.Mui-focused)": {
-                                        "& .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: "white",
-                                        },
-                                    },
-
-                                }}
-                            />
-                            {<p>{errors.confirmPassword?.message}</p>}
-                        </Box>
-
-                        <Box className={style.flex} >
-                            <TextField
-                                {...register('organization')}
-                                id="outlined-required"
-                                label="Organization"
-                                placeholder='Required'
-                                className={style.changeColor}
-                                name="organization"
-                                sx={{
-                                    border: 'white',
-                                    // Root class for the input field
-                                    "& .MuiOutlinedInput-root": {
-                                        color: "white",
-                                        // Class for the border around the input field
-                                        "& .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: "",
-                                        },
-                                    },
-                                    // Class for the label of the input field
-                                    "& .MuiInputLabel-outlined": {
-                                        color: "rgba(160, 160, 160, 0.842)",
-                                    },
-
-                                    "&.Mui-focused": {
-                                        "& .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: "white",
-                                            borderWidth: "3px",
-                                        },
-                                    },
-                                    "&:hover:not(.Mui-focused)": {
-                                        "& .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: "white",
-                                        },
-                                    },
-
-                                }}
-                            />
-                            {<p>{errors.organization?.message}</p>}
-
-                        </Box>
-
-                        <RadioGroup
-                            row
-                            aria-labelledby="demo-row-radio-buttons-group-label"
-                            name="row-radio-buttons-group"
-                        >
-                            <FormControlLabel value="admin" control={<Radio {...register('role')} sx={{
-                                    color: 'white',
-                                    '&.Mui-checked': {
-                                        color: pink[600],
-                                    },
-                                }} />} label="Admin" />
-                            <FormControlLabel value="user" control={<Radio {...register('role')} sx={{
-                                    color: 'white',
-                                    '&.Mui-checked': {
-                                        color: pink[600],
-                                    },
-                                }} />} label="User" />
-                        </RadioGroup>
-
                         <Button type='submit' variant="contained"
                             sx={{ color: 'white', backgroundColor: '#7055b5', border: '0px' }}
                             className='submitBtn'
-                        > Signup</Button>
+                        > Login</Button>
 
                     </form>
                 </Stack>
