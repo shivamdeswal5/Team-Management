@@ -14,12 +14,8 @@ import { Link } from "react-router";
 
 const schema = yup
     .object({
-        name: yup.string().required("Name is Required"),
         email: yup.string().email("Invalid Email Format").required("Email is required"),
         password: yup.string().required().min(6),
-        confirmPassword: yup.string().label('Confirm Password').required().oneOf([yup.ref('password')], 'Passwords must match'),
-        organization: yup.string().required("Organization is Required.. "),
-        role: yup.string().required("Select atleast one role")
     })
     .required()
 
@@ -27,13 +23,18 @@ export default function Signup() {
 
     const navigate = useNavigate();
 
-    type Inputs = {
+    type User = {
         name:string
         email: string
         password: string
         confirmPassword: string
         organization: string
         role: string
+    }
+
+    type Inputs = {
+        email:string
+        password: string
     }
 
     const getUsers = localStorage.getItem('user') || "[]";
@@ -50,7 +51,7 @@ export default function Signup() {
 
     const onSubmit = (data: Inputs) => {
         console.log(data);
-        users.map((user:Inputs)=>{
+        users.map((user:User)=>{
             if(user.email === data.email && user.password === data.password){
                 console.log("Welcome: ",user.name);
                 sessionStorage.setItem("currentUser",JSON.stringify(user));
