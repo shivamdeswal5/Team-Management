@@ -50,28 +50,38 @@ export default function Signup() {
     })
 
     const onSubmit = (data: Inputs) => {
-        console.log(data);
-        users.map((user:User)=>{
-            if(user.email === data.email && user.password === data.password){
-                console.log("Welcome: ",user.name);
-                sessionStorage.setItem("currentUser",JSON.stringify(user));
-                if(user.role === "admin"){
-                    navigate('/admin')
-                }else{
-                    navigate('/user')
+        const matchedUser = users.find((user: User) =>
+            user.email === data.email && user.password === data.password
+        );
+    
+        if (matchedUser) {
+            console.log("Login Successful. Welcome:", matchedUser.name);
+            sessionStorage.setItem("currentUser", JSON.stringify(matchedUser));
+    
+            if (matchedUser.role === "admin") {
+                navigate("/admin");
+            } else {
+                const teams = JSON.parse(localStorage.getItem('teams') || "[]");
+                const isTeamLead = teams.some((team: any) => team.lead === matchedUser.name);
+    
+                if (isTeamLead) {
+                    navigate("/teamlead");
+                } else {
+                    navigate("/user");
                 }
-            }else{
-                console.log("Invalid Email or Password");
-                navigate("/sinup");
             }
-        })
-
+        } else {
+            alert("Invalid Email or Password");
+            console.log("Login Failed");
+        }
+    
         reset();
     };
+    
+    
 
     return (
         <>
-
             <Grid
                 container
                 spacing={{ xs: 2, md: 10 }} columns={{ xs: 4, sm: 8, md: 12 }}

@@ -2,9 +2,10 @@
 import './App.css'
 import { BrowserRouter, Routes, Route,Navigate } from "react-router-dom";
 import Signup from './pages/signup'
-import Admin from './dashboard/admin';
-import User from './dashboard/user';
+import Admin from './components/dashboard/admin';
+import User from './components/dashboard/user';
 import Login from './pages/login';
+import TeamLead from './components/dashboard/team-lead';
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/user" element={<User />} />
+          <Route path="/teamlead" element={<TeamLead />} />
         </Routes>
       </BrowserRouter>
     </>

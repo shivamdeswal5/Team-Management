@@ -48,15 +48,23 @@ export default function Signup() {
     })
 
     const onSubmit = (data: Inputs) => {
-        console.log(data);
         const getUsers = localStorage.getItem('user') || "[]";
-        const prevUsers = JSON.parse(getUsers);
-        localStorage.setItem("user", JSON.stringify([...prevUsers,data]));
-        console.log("Signup Successfully ...")
-        navigate('/login')
-        reset();
+        const prevUsers = JSON.parse(getUsers) as Inputs[];
 
+        const isEmailExists = prevUsers.some(user => user.email.toLowerCase() === data.email.toLowerCase());
+
+        console.log("Is email already registered?", isEmailExists);
+        if (isEmailExists) {
+            alert("This email is already registered. Please login or use a different email.");
+            reset();
+            return;
+        }
+        const updatedUsers = [...prevUsers, data];
+        localStorage.setItem("user", JSON.stringify(updatedUsers));
+        navigate('/login');
+        reset();
     };
+    
 
     return (
         <>
