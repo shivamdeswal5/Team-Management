@@ -18,44 +18,35 @@ const TeamLeadDashboard: React.FC<TeamLeadProps> = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Retrieve current user from sessionStorage
     const user = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
     setCurrentUser(user);
 
-    // Retrieve users from localStorage (assuming user data is stored under 'user' key)
     const storedUsers = JSON.parse(localStorage.getItem('user') || '[]');
     setTeamMembers(storedUsers.filter((user: any) => user.role === 'user').map((user: any) => user.name));
 
-    // If no user is logged in, navigate to login page
     if (!user) {
       navigate('/login');
     }
 
-    // Retrieve stored projects from localStorage on page load
     const storedProjects = JSON.parse(localStorage.getItem('projects') || '[]');
     setProjects(storedProjects);
   }, [navigate]);
 
-  // Handle adding a new project
   const handleAddProject = () => {
     const newProject: Project = {
       name: newProjectName,
       members: selectedMembers,
     };
 
-    // Add the new project to the state
     const updatedProjects = [...projects, newProject];
     setProjects(updatedProjects);
 
-    // Save the updated projects to localStorage
     localStorage.setItem('projects', JSON.stringify(updatedProjects));
 
-    // Reset the form fields
     setNewProjectName('');
     setSelectedMembers([]);
   };
 
-  // Handle logging out
   const handleLogout = () => {
     sessionStorage.removeItem('currentUser');
     navigate('/login');

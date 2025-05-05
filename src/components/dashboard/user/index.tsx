@@ -15,24 +15,19 @@ const UserDashboard: React.FC<UserDashboardProps> = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Retrieve current user from sessionStorage
     const user = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
     setCurrentUser(user);
 
-    // If no user is logged in, navigate to login page
     if (!user) {
       navigate('/login');
     }
 
-    // Retrieve stored projects from localStorage
     const storedProjects = JSON.parse(localStorage.getItem('projects') || '[]');
 
-    // Filter projects by user's team (assuming projects have 'members' which include the user)
     const userProjects = storedProjects.filter((project: Project) => project.members.includes(user.name));
     setProjects(userProjects);
   }, [navigate]);
 
-  // Handle logging out
   const handleLogout = () => {
     sessionStorage.removeItem('currentUser');
     navigate('/login');

@@ -2,11 +2,11 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 interface ProtectedRouteProps {
-   element: React.ReactElement;
+   children: React.ReactElement;
   allowedRoles: string[];
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, allowedRoles }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles }) => {
   const user = JSON.parse(sessionStorage.getItem('currentUser') || 'null');
 
   if (!user) {
@@ -17,7 +17,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, allowedRoles }
     return <Navigate to="/login" replace />;
   }
 
-  return element;
+  return children;
 };
 
 export default ProtectedRoute;
